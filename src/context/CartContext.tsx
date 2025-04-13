@@ -91,14 +91,23 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     
     try {
-      await addDoc(collection(db, 'orders'), {
-        userId: user.uid,
-        userEmail: user.email,
-        items: cartItems,
-        totalPrice,
-        status: 'pending',
-        createdAt: serverTimestamp(),
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.uid,
+          userEmail: user.email,
+          items: cartItems,
+          totalPrice,
+        }),
       });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to process checkout');
+      }
       
       clearCart();
       setIsCartOpen(false);
