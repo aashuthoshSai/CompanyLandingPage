@@ -3,12 +3,10 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { auth, db } from '../config/firebase';
 import { 
-  collection, 
   doc, 
   setDoc, 
   getDoc, 
   updateDoc, 
-  deleteDoc, 
   serverTimestamp,
   onSnapshot
 } from 'firebase/firestore';
@@ -31,7 +29,7 @@ interface CartContextType {
   toggleCart: () => void;
   totalItems: number;
   totalPrice: number;
-  user: any;
+  user: {uid: string; email: string} | null;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -39,12 +37,12 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<{uid: string; email: string} | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      setUser(currentUser ? { uid: currentUser.uid, email: currentUser.email || '' } : null);
       setIsLoading(false);
     });
 

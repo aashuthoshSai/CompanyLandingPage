@@ -14,7 +14,7 @@ const firebaseAdminConfig = {
 };
 
 // Validate environment variables
-function validateFirebaseConfig(config: Record<string, any>) {
+function validateFirebaseConfig(config: Record<string, string | undefined>) {
   for (const [key, value] of Object.entries(config)) {
     if (!value) {
       throw new Error(`Missing Firebase Admin configuration for: ${key}`);
@@ -27,7 +27,7 @@ export function initAdmin() {
 
   if (admin.apps.length === 0) {
     admin.initializeApp({
-      credential: admin.credential.cert(firebaseAdminConfig as any),
+      credential: admin.credential.cert(firebaseAdminConfig as admin.ServiceAccount),
     });
   }
   return {

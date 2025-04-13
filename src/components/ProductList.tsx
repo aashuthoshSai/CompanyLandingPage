@@ -6,7 +6,7 @@ import { useCart } from '../context/CartContext';
 
 export default function ProductList() {
   const [activeCategory, setActiveCategory] = useState(productCategories[0].id);
-  const { addToCart, user } = useCart();
+  const { addToCart } = useCart();
 
   return (
     <section className="w-full max-w-6xl mx-auto py-8">
