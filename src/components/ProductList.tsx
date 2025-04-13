@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { productCategories } from '../config/products';
+import { useCart } from '../context/CartContext';
 
 export default function ProductList() {
   const [activeCategory, setActiveCategory] = useState(productCategories[0].id);
+  const { addToCart, user } = useCart();
 
   return (
     <section className="w-full max-w-6xl mx-auto py-8">
@@ -37,10 +39,17 @@ export default function ProductList() {
               key={product.id}
               className="border border-foreground/10 rounded-lg p-4 hover:shadow-md transition-shadow"
             >
-              <div className="flex justify-between items-start">
+              <div className="flex justify-between items-start mb-2">
                 <h3 className="font-medium text-lg">{product.name}</h3>
                 <span className="font-bold text-lg">${product.price.toFixed(2)}</span>
               </div>
+              
+              <button
+                onClick={() => addToCart(product)}
+                className="w-full mt-4 py-2 px-4 bg-foreground text-background font-medium rounded-lg hover:bg-foreground/90 transition-colors text-sm"
+              >
+                Add to Cart
+              </button>
             </div>
           ))}
       </div>
