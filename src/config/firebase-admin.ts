@@ -1,4 +1,4 @@
-import * as admin from 'firebase-admin';
+import admin from 'firebase-admin';
 
 const firebaseAdminConfig = {
   type: 'service_account',
@@ -13,7 +13,18 @@ const firebaseAdminConfig = {
   client_x509_cert_url: process.env.FIREBASE_ADMIN_CLIENT_X509_CERT_URL,
 };
 
+// Validate environment variables
+function validateFirebaseConfig(config: Record<string, any>) {
+  for (const [key, value] of Object.entries(config)) {
+    if (!value) {
+      throw new Error(`Missing Firebase Admin configuration for: ${key}`);
+    }
+  }
+}
+
 export function initAdmin() {
+  validateFirebaseConfig(firebaseAdminConfig); // Validate config before initializing
+
   if (admin.apps.length === 0) {
     admin.initializeApp({
       credential: admin.credential.cert(firebaseAdminConfig as any),
