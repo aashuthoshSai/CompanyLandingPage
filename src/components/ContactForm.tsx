@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import { db } from '../config/firebase';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 interface FormData {
   name: string;
@@ -30,9 +32,13 @@ export default function ContactForm() {
     setIsSubmitting(true);
     
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await addDoc(collection(db, 'contactMessages'), {
+        ...formData,
+        storeEmail: 'aashuthoshbsai@gmail.com', // Store email to send notification to
+        createdAt: serverTimestamp(),
+      });
       
-      console.log('Form submitted:', formData);
+      console.log('Form submitted to Firebase:', formData);
       
       setSubmitStatus('success');
       setFormData({
