@@ -19,18 +19,14 @@ export default function Cart() {
 
   const handleCheckout = async () => {
     if (!user) {
-      alert('Please sign in to checkout');
       return;
     }
     
-    const success = await checkout();
-    if (success) {
-      alert('Order placed successfully!');
-    }
+    await checkout();
   };
 
   if (!isCartOpen) return null;
-
+  
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
       {/* Backdrop */}
