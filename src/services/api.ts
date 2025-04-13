@@ -2,8 +2,18 @@
 /**
  * Place an order with the items in the cart
  */
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  category: string;
+  description?: string;
+  imageUrl?: string;
+}
+
 export async function checkoutOrder(orderData: {
-  items: any[];
+  items: CartItem[];
   totalPrice: number;
   userId: string;
   userEmail: string;

@@ -29,7 +29,7 @@ interface CartContextType {
   toggleCart: () => void;
   totalItems: number;
   totalPrice: number;
-  user: any;
+  user: {uid: string; email: string} | null;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
